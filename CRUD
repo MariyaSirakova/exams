@@ -1,0 +1,54 @@
+size = 6
+matrix = []
+for r in range(size):
+    matrix.append(input().split())
+
+first_position = list(map(int, input().strip("(").strip(")").split(", ")))
+
+possible_moves = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+command = input().split(", ")
+
+
+while command[0] != "Stop":
+    action = command[0]
+    direction = command[1]
+
+    current_row, current_col = first_position
+    row_to_go, col_to_go = possible_moves[direction]
+    desired_row = current_row + row_to_go
+    desired_col = current_col + col_to_go
+
+    if action == "Create":
+        value = command[2]
+        if matrix[desired_row][desired_col] == ".":
+            matrix[desired_row][desired_col] = value
+            first_position = [desired_row, desired_col]
+        first_position = [desired_row, desired_col]
+
+    elif action == "Update":
+        value = command[2]
+        if matrix[desired_row][desired_col].isdigit() or matrix[desired_row][desired_col].isalpha():
+            matrix[desired_row][desired_col] = value
+            first_position = [desired_row, desired_col]
+        first_position = [desired_row, desired_col]
+
+    elif action == "Delete":
+        if matrix[desired_row][desired_col].isdigit() or matrix[desired_row][desired_col].isalpha():
+            matrix[desired_row][desired_col] = "."
+            first_position = [desired_row, desired_col]
+        first_position = [desired_row, desired_col]
+
+    elif action == "Read":
+        if matrix[desired_row][desired_col].isdigit() or matrix[desired_row][desired_col].isalpha():
+            print(matrix[desired_row][desired_col])
+            first_position = [desired_row, desired_col]
+        first_position = [desired_row, desired_col]
+
+    command = input().split(", ")
+
+for r in matrix:
+    print(" ".join(r))
+
+
+
