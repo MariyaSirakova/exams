@@ -1,0 +1,58 @@
+size = int(input())
+racing_number = input()
+
+matrix = []
+car_row = 0
+car_col = 0
+tunel_positions = []
+
+passed_kilometres = 0
+reach_finish_line = False
+
+for row in range(size):
+    matrix.append(input().split())
+    for col in range(size):
+        if matrix[row][col] == "T":
+            tunel_positions.append([row, col])
+
+car_movements = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+command = input()
+
+while command != "End":
+    current_row, current_col = car_row, car_col
+    row_to_go, col_to_go = car_movements[command]
+    desired_row = current_row + row_to_go
+    desired_col = current_col + col_to_go
+
+    if matrix[desired_row][desired_col] == ".":
+        passed_kilometres += 10
+        car_row, car_col = desired_row, desired_col
+
+    elif matrix[desired_row][desired_col] == "T":
+        matrix[desired_row][desired_col] = "."
+        passed_kilometres += 30
+        if [desired_row, desired_col] == tunel_positions[0]:
+            car_row, car_col = tunel_positions[1]
+            matrix[car_row][car_col] = "."
+        elif [desired_row, desired_col] == tunel_positions[1]:
+            car_row, car_col = tunel_positions[0]
+            matrix[car_row][car_col] = "."
+
+    elif matrix[desired_row][desired_col] == "F":
+        passed_kilometres += 10
+        matrix[desired_row][desired_col] = "C"
+        print(f"Racing car {racing_number} finished the stage!")
+        reach_finish_line = True
+        break
+
+    command = input()
+
+if not reach_finish_line:
+    matrix[desired_row][desired_col] = "C"
+    print(f"Racing car {racing_number} DNF.")
+
+print(f"Distance covered {passed_kilometres} km.")
+
+for row in matrix:
+    print(*row, sep="")
