@@ -1,0 +1,48 @@
+size = int(input())
+
+matrix = []
+submarine_position = None
+
+possible_hits = 0
+battle_cruiser = 0
+
+for row in range(size):
+    matrix.append(list(input()))
+    for col in range(size):
+        if matrix[row][col] == "S":
+            submarine_position = [row, col]
+            matrix[row][col] = "-"
+
+possible_movements = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+while True:
+    command = input()
+
+    current_row, current_col = submarine_position
+    row_to_go, col_to_go = possible_movements[command]
+    desired_row = current_row + row_to_go
+    desired_col = current_col + col_to_go
+
+    if matrix[desired_row][desired_col] == "*":
+        matrix[desired_row][desired_col] = "-"
+        submarine_position = [desired_row, desired_col]
+        possible_hits += 1
+        if possible_hits == 3:
+            matrix[desired_row][desired_col] = "S"
+            print(f"Mission failed, U-9 disappeared! Last known coordinates [{desired_row}, {desired_col}]!")
+            break
+
+    elif matrix[desired_row][desired_col] == "C":
+        battle_cruiser += 1
+        matrix[desired_row][desired_col] = "-"
+        submarine_position = [desired_row, desired_col]
+        if battle_cruiser == 3:
+            matrix[desired_row][desired_col] = "S"
+            print("Mission accomplished, U-9 has destroyed all battle cruisers of the enemy!")
+            break
+    else:
+        matrix[desired_row][desired_col] = "-"
+        submarine_position = [desired_row, desired_col]
+
+for rows in matrix:
+    print(*rows, sep='')
