@@ -1,0 +1,57 @@
+first_player, second_player = input().split(", ")
+
+matrix = []
+for row in range(6):
+    matrix.append(input().split())
+first_player_need_rest = False
+second_player_need_rest = False
+
+while True:
+    first_player_coordinates = map(int, input().strip("(").strip(")").split(", "))
+    current_row_first, current_col_first = first_player_coordinates
+    if not first_player_need_rest:
+
+        if matrix[current_row_first][current_col_first] == "E":
+            print(f"{first_player} found the Exit and wins the game!")
+            break
+
+        if matrix[current_row_first][current_col_first] == "T":
+            print(f"{first_player} is out of the game! The winner is {second_player}.")
+            break
+
+        if matrix[current_row_first][current_col_first] == "W":
+            print(f"{first_player} hits a wall and needs to rest.")
+            first_player_need_rest = True
+    else:
+        first_player_need_rest = False
+
+    second_player_coordinates = map(int, input().strip("(").strip(")").split(", "))
+    current_row_second, current_col_second = second_player_coordinates
+
+    if not second_player_need_rest:
+
+        if matrix[current_row_second][current_col_second] == "E":
+            print(f"{second_player} found the Exit and wins the game!")
+            break
+
+        if matrix[current_row_second][current_col_second] == "T":
+            print(f"{second_player} is out of the game! The winner is {first_player}.")
+            break
+
+        if matrix[current_row_second][current_col_second] == "W":
+            print(f"{second_player} hits a wall and needs to rest.")
+            second_player_need_rest = True
+    else:
+        second_player_need_rest = False
+
+
+
+
+
+
+
+
+
+
+
+
