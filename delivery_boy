@@ -1,0 +1,62 @@
+rows_count, cols_count = [int(x) for x in input().split()]
+
+matrix = []
+starting_row = 0
+starting_col = 0
+boy_position = None
+
+for row in range(rows_count):
+    matrix.append(list(input()))
+    for col in range(cols_count):
+        if matrix[row][col] == "B":
+            boy_position = [row, col]
+            starting_row = row
+            starting_col = col
+
+possible_movements = {
+    "up": (-1, 0),
+    "down": (1, 0),
+    "left": (0, -1),
+    "right": (0, 1)
+}
+
+directions = input()
+
+while directions:
+
+    current_row, current_col = boy_position
+    row_to_go, col_to_go = possible_movements[directions]
+    desired_row = current_row + row_to_go
+    desired_col = current_col + col_to_go
+
+    if desired_row < 0 or desired_row >= rows_count or desired_col < 0 or desired_col >= cols_count:
+        matrix[starting_row][starting_col] = " "
+        print("The delivery is late. Order is canceled.")
+        break
+
+    elif matrix[desired_row][desired_col] == "P":
+        matrix[desired_row][desired_col] = "R"
+        matrix[current_row][current_col] = "."
+        boy_position = [desired_row, desired_col]
+        print("Pizza is collected. 10 minutes for delivery.")
+
+    elif matrix[desired_row][desired_col] == "A":
+        matrix[desired_row][desired_col] = "P"
+        matrix[current_row][current_col] = "."
+        boy_position = [desired_row, desired_col]
+        print("Pizza is delivered on time! Next order...")
+        matrix[starting_row][starting_col] = "B"
+        break
+
+    elif matrix[desired_row][desired_col] == "*":
+        directions = input()
+        continue
+
+    else:
+        matrix[desired_row][desired_col] = "."
+        boy_position = [desired_row, desired_col]
+
+    directions = input()
+
+for rows in matrix:
+    print("".join(rows))
