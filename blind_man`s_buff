@@ -1,0 +1,55 @@
+rows, cols = [int(x) for x in input().split()]
+
+matrix = []
+my_row_position = 0
+my_col_position = 0
+
+for r in range(rows):
+    matrix.append(input().split())
+    for c in range(cols):
+        if matrix[r][c] == "B":
+            my_row_position = r
+            my_col_position = c
+
+
+touched_opponents = 0
+count_of_moves = 0
+
+possible_movements = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+command = input()
+
+while command != "Finish":
+
+    current_row, current_col = my_row_position, my_col_position
+    row_to_go, col_to_go = possible_movements[command]
+    desired_row = current_row + row_to_go
+    desired_col = current_col + col_to_go
+
+    if desired_row < 0 or desired_row >= rows or desired_col < 0 or desired_col >= cols:
+        command = input()
+        continue
+
+    elif matrix[desired_row][desired_col] == "O":
+        command = input()
+        continue
+
+    elif matrix[desired_row][desired_col] == "P":
+        touched_opponents += 1
+        count_of_moves += 1
+        matrix[desired_row][desired_col] = "-"
+        my_row_position = desired_row
+        my_col_position = desired_col
+        if touched_opponents >= 3:
+            break
+
+    else:
+        matrix[desired_row][desired_col] = "-"
+        count_of_moves += 1
+        my_row_position = desired_row
+        my_col_position = desired_col
+
+    command = input()
+
+print("Game over!")
+print(f"Touched opponents: {touched_opponents} Moves made: {count_of_moves}")
