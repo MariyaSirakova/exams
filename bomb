@@ -1,0 +1,44 @@
+from collections import deque
+size = int(input())
+matrix = [[int(x) for x in input().split()] for _ in range(size)]
+
+bombs = deque(input().split())
+
+for index in bombs:
+    curr_position = index.split(",")
+    curr_row = int(curr_position[0])
+    curr_col = int(curr_position[1])
+
+    bomb = matrix[curr_row][curr_col]
+
+    explodes_right = matrix[curr_row][curr_col + 1] - bomb
+    matrix[curr_row][curr_col + 1] = explodes_right
+
+    explodes_left = matrix[curr_row][curr_col - 1] - bomb
+    matrix[curr_row][curr_col - 1] = explodes_left
+
+    explodes_up = matrix[curr_row - 1][curr_col] - bomb
+    matrix[curr_row - 1][curr_col] = explodes_up
+
+    explodes_down = matrix[curr_row + 1][curr_col] - bomb
+    matrix[curr_row + 1][curr_col] = explodes_down
+
+    explodes_up_right = matrix[curr_row - 1][curr_col + 1] - bomb
+    matrix[curr_row - 1][curr_col + 1] = explodes_up_right
+
+    explodes_down_right = matrix[curr_row + 1][curr_col + 1] - bomb
+    matrix[curr_row + 1][curr_col + 1] = explodes_down_right
+
+    explodes_up_left = matrix[curr_row - 1][curr_col - 1] - bomb
+    matrix[curr_row - 1][curr_col - 1] = explodes_up_left
+
+    explodes_down_left = matrix[curr_row + 1][curr_col - 1] - bomb
+    matrix[curr_row + 1][curr_col - 1] = explodes_down_left
+
+    matrix[curr_row][curr_col] = 0
+
+[print(*row) for row in matrix]
+
+
+
+
