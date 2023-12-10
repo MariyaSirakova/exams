@@ -1,0 +1,66 @@
+rows, columns = [int(x) for x in input().split(", ")]
+matrix = []
+my_position_row = 0
+my_position_col = 0
+count_of_gift = 0
+count_of_decorations = 0
+count_of_cookies = 0
+
+for r in range(rows):
+    matrix.append(input().split())
+    for c in range(columns):
+        if matrix[r][c] == "Y":
+            my_position_row = r
+            my_position_col = c
+            matrix[r][c] = "x"
+        elif matrix[r][c] == "G":
+            count_of_gift += 1
+        elif matrix[r][c] == "D":
+            count_of_decorations += 1
+        elif matrix[r][c] == "C":
+            count_of_cookies += 1
+
+
+command = input()
+
+while command != "End":
+    current_direction, steps = [x if x.isalpha() else int(x) for x in command.split("-")]
+    for step in steps:
+
+        if current_direction == "up":
+            my_position_row = -1
+            if my_position_row < 0:
+                my_position_row = rows - 1
+
+        elif current_direction == "down":
+            my_position_row = 1
+            if my_position_row >= rows:
+                my_position_row = 0
+
+        elif current_direction == "left":
+            my_position_col = -1
+            if my_position_col < 0:
+                my_position_col = columns - 1
+
+        elif current_direction == "right":
+            my_position_col = 1
+            if my_position_col >= columns:
+                my_position_col = 0
+
+        current_step = matrix[my_position_row][my_position_col]
+
+        if current_step == "D":
+            count_of_decorations -= 1
+        elif current_step == "G":
+            count_of_gift -= 1
+        elif current_step == "C":
+            count_of_cookies -= 1
+
+        matrix[my_position_row][my_position_col] = "x"
+
+        if count_of_decorations and count_of_cookies and count_of_gift == 0:
+            print("Merry Christmas!")
+            break
+
+
+matrix[my_position_row][my_position_col] = "Y"
