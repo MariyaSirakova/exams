@@ -1,0 +1,51 @@
+size = 6
+matrix = []
+rover_position = None
+water_deposit = 0
+metal_deposit = 0
+concrete_deposit = 0
+
+
+for row in range(size):
+    matrix.append(input().split())
+    for col in range(size):
+        if matrix[row][col] == "E":
+            rover_position = [row, col]
+
+commands = input().split(", ")
+
+possible_movements = {"up": (-1, 0), "down": (1, 0), "left": (0, -1), "right": (0, 1)}
+
+for command in commands:
+    current_row, current_col = rover_position
+    desired_row = current_row + possible_movements[command][0]
+    desired_col = current_col + possible_movements[command][1]
+
+
+
+    if matrix[desired_row][desired_col] == "W":
+        water_deposit += 1
+        rover_position = [desired_row, desired_col]
+        print(f"Water deposit found at ({desired_row}, {desired_col})")
+
+    elif matrix[desired_row][desired_col] == "M":
+        metal_deposit += 1
+        rover_position = [desired_row, desired_col]
+        print(f"Metal deposit found at ({desired_row}, {desired_col})")
+
+    elif matrix[desired_row][desired_col] == "C":
+        concrete_deposit += 1
+        rover_position = [desired_row, desired_col]
+        print(f"Concrete deposit found at ({desired_row}, {desired_col})")
+
+    elif matrix[desired_row][desired_col] == "R":
+        print(f"Rover got broken at ({desired_row}, {desired_col})")
+        break
+
+    elif matrix[desired_row][desired_col] == "-":
+        rover_position = [desired_row, desired_col]
+
+if water_deposit and metal_deposit and concrete_deposit > 0:
+    print("Area suitable to start the colony.")
+else:
+    print("Area not suitable to start the colony.")
